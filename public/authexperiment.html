@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset=utf-8 />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Sign In Example</title>
+
+    <!-- Material Design Theming -->
+    <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-indigo.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+
+    <!-- Import and configure the Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/4.7.0/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyCSrBqM0qRDTWxiBD9Vv-wPDB_gv42vzQw",
+            authDomain: "fir-auth-6aa49.firebaseapp.com",
+            databaseURL: "https://fir-auth-6aa49.firebaseio.com",
+            projectId: "fir-auth-6aa49",
+            storageBucket: "",
+            messagingSenderId: "272434814300"
+        };
+        firebase.initializeApp(config);
+
+    </script>
+
+    <script type="text/javascript">
+        function toggleSignInGoogle() {
+            console.log('Google Toggle')
+            if (!firebase.auth().currentUser) {
+                var provider = new firebase.auth.GoogleAuthProvider();
+
+                provider.addScope('https://www.googleapis.com/auth/plus.login');
+
+                firebase.auth().signInWithRedirect(provider);
+            } else {
+                firebase.auth().signOut();
+                var provider = new firebase.auth.GoogleAuthProvider();
+
+                provider.addScope('https://www.googleapis.com/auth/plus.login');
+
+                firebase.auth().signInWithRedirect(provider);
+            }
+            // [START_EXCLUDE]
+            document.getElementById('Google-signin').disabled = true;
+            // [END_EXCLUDE]
+        }
+
+        function toggleSignInGithub() {
+            console.log('Github Toggle')
+
+            if (!firebase.auth().currentUser) {
+                var provider = new firebase.auth.GithubAuthProvider();
+
+                provider.addScope('repo');
+
+                firebase.auth().signInWithRedirect(provider);
+            } else {
+                firebase.auth().signOut();
+                var provider = new firebase.auth.GithubAuthProvider();
+
+                provider.addScope('repo');
+
+                firebase.auth().signInWithRedirect(provider);
+            }
+        }
+
+        function initApp() {
+            firebase.auth().getRedirectResult().then(function(result) {
+                if (result.credential) {
+                    // This gives you a GitHub Access Token. You can use it to access the GitHub API.
+                    var token = result.credential.accessToken;
+                    var credential = result.credential;
+                    var user = result.user;
+                    // [START_EXCLUDE]
+                    document.getElementById('quickstart-oauthtoken').textContent = token;
+                } else {
+                    document.getElementById('quickstart-oauthtoken').textContent = 'null';
+                    // [END_EXCLUDE]
+                }
+                // The signed-in user info.
+                var user = result.user;
+            }).catch(function(error) {
+                var errorCode = error.code;
+                console.log(errorCode);
+                var errorMessage = error.message;
+                console.log(errorMessage);
+
+                var email = error.email;
+                console.log(email);
+
+                var credential = error.credential;
+                console.log(credential);
+
+
+                if (errorCode === 'auth/account-exists-with-different-credential') {
+                    alert('You have already signed up with a different auth provider for that email.');
+                } else {
+                    console.error(error);
+                }
+            });
+            // [END getidptoken]
+            // Listening for auth state changes.
+            // [START authstatelistener]
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                    // User is signed in.
+                    var displayName = user.displayName;
+                    var email = user.email;
+                    var emailVerified = user.emailVerified;
+                    var photoURL = user.photoURL;
+                    var isAnonymous = user.isAnonymous;
+                    var uid = user.uid;
+                    var providerData = user.providerData;
+                    // [START_EXCLUDE]
+                    document.getElementById('quickstart-sign-in-status').textContent = 'Signed in';
+                    document.getElementById('quickstart-account-details').textContent = JSON.stringify(user, null, '  ');
+                    // [END_EXCLUDE]
+                } else {
+                    // User is signed out.
+                    // [START_EXCLUDE]
+                    document.getElementById('quickstart-sign-in-status').textContent = 'Signed out';
+                    document.getElementById('quickstart-account-details').textContent = 'null';
+                    document.getElementById('quickstart-oauthtoken').textContent = 'null';
+                    // [END_EXCLUDE]
+                };
+            });
+            document.getElementById('Google-signin').addEventListener('click', toggleSignInGoogle, false);
+            document.getElementById('Github-signin').addEventListener('click', toggleSignInGithub, false);
+        }
+        window.onload = function() {
+            initApp();
+        };
+
+    </script>
+</head>
+
+<body>
+    <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <main class="mdl-layout__content mdl-color--grey-100">
+            <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
+
+                <!-- Container for the demo -->
+                <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
+                    <div class="mdl-card__title mdl-color--light-blue-600 mdl-color-text--white">
+                        <h2 class="mdl-card__title-text">Google Authentication with Redirect</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+                        <p>Sign in with your Google account below.</p>
+
+                        <!-- Button that handles sign-in/sign-out -->
+                        <button class="mdl-button mdl-js-button mdl-button--raised" id="Google-signin">Sign in with Google</button>
+                    </div>
+                    <div class="mdl-card__title mdl-color--light-blue-600 mdl-color-text--white">
+                        <h2 class="mdl-card__title-text">GitHub Authentication with Redirect</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+                        <p>Sign in with your GitHub account below.</p>
+                        <!-- Button that handles sign-in/sign-out -->
+                        <button class="mdl-button mdl-js-button mdl-button--raised" id="Github-signin">Sign in with GitHub</button>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
+
+                <!-- Container for the demo -->
+                <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
+                    <div class="mdl-card__title mdl-color--light-blue-600 mdl-color-text--white">
+                        <h2 class="mdl-card__title-text">Results</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+                        <!-- Container where we'll display the user details -->
+                        <div class="quickstart-user-details-container">
+                            Firebase sign-in status: <span id="quickstart-sign-in-status">Unknown</span>
+                            <div>Firebase auth <code>currentUser</code> object value:</div>
+                            <pre><code id="quickstart-account-details">null</code></pre>
+                            <div> OAuth Access Token:</div>
+                            <pre><code id="quickstart-oauthtoken">null</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>
