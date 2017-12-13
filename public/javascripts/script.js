@@ -1,10 +1,12 @@
 var userName;
+var userImg;
 
 console.log('loading');
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         userName = user.displayName;
-        console.log(user.name);
+        userImg = user.photoURL;
+        console.log(user.name + "signed in");
     }
 });
 
@@ -18,8 +20,9 @@ myApp.controller("chatController", ["$scope", "$firebaseArray",
 
         $scope.update = function (user) {
             var newmessage = {
-                from: userName || "anonymous",
-                body: user.chat
+                from: userName || "Anonymous Armadillo",
+                body: user.chat,
+                img: userImg
             };
             console.log(newmessage);
             $scope.chats.$add(newmessage);
