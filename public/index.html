@@ -57,11 +57,13 @@
                         <button class="mdl-button mdl-js-button mdl-button--raised" id="Google-signin">Sign in with Google</button>
                         <button class="mdl-button mdl-js-button mdl-button--raised" id="Github-signin">Sign in with GitHub</button>
 
+                        <button class="mdl-button mdl-js-button mdl-button--raised" id="Signout">Sign Out</button>
+
                     </div>
                 </div>
             </div>
 
-            <div ng-if="userName" class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
+            <div ng-if="userName" class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid chatbox">
 
                 <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
                     <div class="mdl-card__title mdl-color--light-blue-600 mdl-color-text--white">
@@ -69,7 +71,7 @@
                     </div>
                     <div class="mdl-card__supporting-text mdl-color-text--grey-600">
                         <form novalidate class="simple-form">
-                            <br /> Your message: <input type="text" ng-model="user.chat" /><br />
+                            <br /> Your message: <input type="text" ng-model="user.chat" />
                             <input type="submit" ng-click="update(user)" value="Chat" />
                         </form>
                         <ul>

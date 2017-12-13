@@ -1,5 +1,7 @@
 function toggleSignInGoogle() {
     console.log('Google Toggle')
+    document.getElementById('Signout').style.display = 'initial';
+
     if (!firebase.auth().currentUser) {
         var provider = new firebase.auth.GoogleAuthProvider();
 
@@ -38,6 +40,18 @@ function toggleSignInGithub() {
     }
 }
 
+function signOut() {
+    console.log('Sign Out Toggle')
+
+    var elems = document.getElementsByClassName("chatbox");
+    for (i = 0; i < elems.length; i++) {
+        elems[i].style.display = 'none';
+    }
+    document.getElementById("Signout").style.visibility = "hidden";
+
+    firebase.auth().signOut();
+}
+
 function initApp() {
     firebase.auth().getRedirectResult().then(function (result) {
         if (result.credential) {
@@ -45,10 +59,11 @@ function initApp() {
             var token = result.credential.accessToken;
             var credential = result.credential;
             var user = result.user;
+
             // [START_EXCLUDE]
-            document.getElementById('quickstart-oauthtoken').textContent = token;
         } else {
-            document.getElementById('quickstart-oauthtoken').textContent = 'null';
+            console.log('no auth')
+            document.getElementById("Signout").style.visibility = "hidden";
             // [END_EXCLUDE]
         }
         // The signed-in user info.
@@ -60,16 +75,11 @@ function initApp() {
         console.log(errorMessage);
 
         var email = error.email;
-        console.log(email);
 
         var credential = error.credential;
-        console.log(credential);
-
 
         if (errorCode === 'auth/account-exists-with-different-credential') {
             alert('You have already signed up with a different auth provider for that email.');
-        } else {
-            console.error(error);
         }
     });
     // [END getidptoken]
@@ -77,6 +87,8 @@ function initApp() {
     // [START authstatelistener]
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
+            document.getElementById("Signout").style.visibility = "visible";
+
             // User is signed in.
             var displayName = user.displayName;
             var email = user.email;
@@ -86,20 +98,24 @@ function initApp() {
             var uid = user.uid;
             var providerData = user.providerData;
             // [START_EXCLUDE]
-            document.getElementById('quickstart-sign-in-status').textContent = 'Signed in';
-            document.getElementById('quickstart-account-details').textContent = JSON.stringify(user, null, '  ');
+            //document.getElementById('quickstart-sign-in-status').textContent = 'Signed in';
+            //document.getElementById('quickstart-account-details').textContent = JSON.stringify(user, null, '  ');
             // [END_EXCLUDE]
         } else {
             // User is signed out.
             // [START_EXCLUDE]
-            document.getElementById('quickstart-sign-in-status').textContent = 'Signed out';
-            document.getElementById('quickstart-account-details').textContent = 'null';
-            document.getElementById('quickstart-oauthtoken').textContent = 'null';
+            //document.getElementById('quickstart-sign-in-status').textContent = 'Signed out';
+            //document.getElementById('quickstart-account-details').textContent = 'null';
+            //document.getElementById('quickstart-oauthtoken').textContent = 'null';
             // [END_EXCLUDE]
+            document.getElementById("Signout").style.visibility = "hidden";
+
         };
     });
     document.getElementById('Google-signin').addEventListener('click', toggleSignInGoogle, false);
     document.getElementById('Github-signin').addEventListener('click', toggleSignInGithub, false);
+    document.getElementById('Signout').addEventListener('click', signOut, false);
+
 }
 window.onload = function () {
     initApp();
