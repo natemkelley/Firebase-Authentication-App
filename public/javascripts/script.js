@@ -1,8 +1,19 @@
+window.onload = function () {
+    console.log('loading');
+    firebase.auth().onAuthStateChanged(function (user) {
+        var displayName = user.displayName;
+        console.log(displayName);
+    });
+};
+
+
 var myApp = angular.module("myApp", ["firebase"]);
+
 myApp.controller("chatController", ["$scope", "$firebaseArray",
  function ($scope, $firebaseArray) {
         var ref = firebase.database().ref().child("messages");
         $scope.chats = $firebaseArray(ref);
+
         $scope.update = function (user) {
             var newmessage = {
                 from: user.name || "anonymous",
