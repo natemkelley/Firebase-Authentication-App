@@ -20,7 +20,7 @@ body {
 }
 
 img {
-    max-width: 25px;
+    max-width: 50px;
     border-radius: 20%;
 }
 
@@ -31,6 +31,16 @@ a {
 li a {
     text-decoration: underline;
     color: #0288d1;
+}
+
+li {
+    list-style: none;
+    margin-top: 10px;
+}
+
+li:hover {
+    background-color: azure;
+    transition: 0.2s
 }
 
 .mdl-grid {
