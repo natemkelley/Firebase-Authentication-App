@@ -1,11 +1,8 @@
-window.onload = function () {
-    console.log('loading');
-    firebase.auth().onAuthStateChanged(function (user) {
-        var displayName = user.displayName;
-        console.log(displayName);
-    });
-};
-
+console.log('loading');
+firebase.auth().onAuthStateChanged(function (user) {
+    user.name = user.displayName;
+    console.log(user.name);
+});
 
 var myApp = angular.module("myApp", ["firebase"]);
 

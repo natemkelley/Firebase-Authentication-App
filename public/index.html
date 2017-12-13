@@ -19,10 +19,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
     <!-- AngularFire -->
     <script src="https://cdn.firebase.com/libs/angularfire/2.1.0/angularfire.min.js"></script>
-    <!-- Your Javascript -->
-    <script src="javascripts/script.js"></script>
-    <script src="javascripts/script-auth.js"></script>
-
 
     <script>
         // Initialize Firebase
@@ -38,6 +34,9 @@
 
     </script>
 
+    <!-- Your Javascript -->
+    <script src="javascripts/script.js"></script>
+    <script src="javascripts/script-auth.js"></script>
 
 </head>
 
@@ -86,6 +85,20 @@
                     </div>
                 </div>
             </div>
+
+            <div ng-controller="chatController">
+                <form novalidate class="simple-form">
+                    Name: <input type="text" ng-model="user.name" /><br /> Chat: <input type="text" ng-model="user.chat" /><br />
+                    <input type="submit" ng-click="update(user)" value="Save" />
+                </form>
+                <ul>
+                    <li ng-repeat='line in chats'>
+                        {{line.from}} - {{line.body}}
+                    </li>
+                </ul>
+            </div>
+
+
         </main>
     </div>
 </body>
