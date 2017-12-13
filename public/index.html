@@ -75,7 +75,7 @@
                             <input type="submit" ng-click="update(user)" value="Chat" />
                         </form>
                         <ul>
-                            <li ng-repeat='line in chats'>
+                            <li ng-repeat="line in chats | orderBy:'-'">
                                 <img ng-src="{{line.img}}"> {{line.from}}: {{line.body}}
                             </li>
                         </ul>
