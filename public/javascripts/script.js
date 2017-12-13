@@ -2,13 +2,7 @@ var userName;
 var userImg;
 
 console.log('loading');
-firebase.auth().onAuthStateChanged(function (user) {
-    if (user) {
-        userName = user.displayName;
-        userImg = user.photoURL;
-        console.log(user.name + "signed in");
-    }
-});
+
 
 
 var myApp = angular.module("myApp", ["firebase"]);
@@ -28,5 +22,14 @@ myApp.controller("chatController", ["$scope", "$firebaseArray",
             $scope.chats.$add(newmessage);
             user.chat = "";
         }
+        
+        firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+        userName = user.displayName;
+        userImg = user.photoURL;
+        console.log(user.name + "signed in");
+        $scope.userName = userName;
+    }
+});
  }
 ]);

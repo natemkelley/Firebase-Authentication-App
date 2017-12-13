@@ -19,6 +19,11 @@ body {
     font-family: 'Roboto', 'Helvetica', sans-serif;
 }
 
+img {
+    max-width: 25px;
+    border-radius: 20%;
+}
+
 a {
     text-decoration: none;
 }
