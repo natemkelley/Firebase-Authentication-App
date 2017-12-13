@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html ng-app="myApp">
 
 <head>
     <meta charset=utf-8 />
@@ -88,7 +88,9 @@
 
             <div ng-controller="chatController">
                 <form novalidate class="simple-form">
-                    Name: <input type="text" ng-model="user.name" /><br /> Chat: <input type="text" ng-model="user.chat" /><br />
+                    Name: {{user.name}}
+<!--                    <input type="text" ng-model="user.name" />-->
+                    <br /> Chat: <input type="text" ng-model="user.chat" /><br />
                     <input type="submit" ng-click="update(user)" value="Save" />
                 </form>
                 <ul>
